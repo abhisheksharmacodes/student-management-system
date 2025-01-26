@@ -20,9 +20,9 @@
     "dev:host": "vite --host"
   },
   "engines": {
-    "node": "16"
+    "node": "20.x"
   },
-  "packageManager": "npm@1.22.22",
+  "packageManager": "yarn@1.22.22",
   "dependencies": {
     "@emotion/cache": "^11.13.1",
     "@emotion/react": "^11.13.3",
