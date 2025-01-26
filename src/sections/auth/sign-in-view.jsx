@@ -15,6 +15,7 @@ import Typography from '@mui/material/Typography';
 
 export function SignInView() {
 
+  const navigate = useNavigate();
   useEffect(() => {
     const auth2 = getAuth();
     signOut(auth2)
@@ -29,62 +30,61 @@ export function SignInView() {
         // An error happened.
         console.error('Error signing out:', error);
       });
-  });
+  }, [navigate]);
 
-  const navigate = useNavigate();
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [error, setError] = useState('');
 
   return (
     <Box>
       <Typography variant="h4" mb={2} align="center">Sign In</Typography>
-      <form onSubmit={handleSubmit(async (data)=>{
+      <form onSubmit={handleSubmit(async (data) => {
         try {
-        await signInWithEmailAndPassword(auth, data.email, data.password);
-      navigate('/students');
+          await signInWithEmailAndPassword(auth, data.email, data.password);
+          navigate('/students');
         } catch (e) {
-        setError('Failed to sign in. Please check your email and password.');
+          setError('Failed to sign in. Please check your email and password.');
         }
       })}>
-      <Controller
-        name="email"
-        control={control}
-        defaultValue=""
-        rules={{ required: 'Email is required', pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: 'Invalid email' } }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Email"
-            fullWidth
-            margin="normal"
-            type="email"
-            error={!!errors.email}
-            helperText={errors.email ? errors.email.message : ''}
-          />
-        )}
-      />
-      <Controller
-        name="password"
-        control={control}
-        defaultValue=""
-        rules={{ required: 'Password is required' }}
-        render={({ field }) => (
-          <TextField
-            {...field}
-            label="Password"
-            fullWidth
-            margin="normal"
-            type="password"
-            error={!!errors.password}
-            helperText={errors.password ? errors.password.message : ''}
-          />
-        )}
-      />
-      {errors.email && <Typography color="error" mb={2}>{String(errors.email.message)}</Typography>}
-      <Button type="submit" style={{ marginTop: '10px' }} variant="contained" color="primary" fullWidth>
-        Sign In
-      </Button>
-    </form>
+        <Controller
+          name="email"
+          control={control}
+          defaultValue=""
+          rules={{ required: 'Email is required', pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: 'Invalid email' } }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Email"
+              fullWidth
+              margin="normal"
+              type="email"
+              error={!!errors.email}
+              helperText={errors.email ? errors.email.message : ''}
+            />
+          )}
+        />
+        <Controller
+          name="password"
+          control={control}
+          defaultValue=""
+          rules={{ required: 'Password is required' }}
+          render={({ field }) => (
+            <TextField
+              {...field}
+              label="Password"
+              fullWidth
+              margin="normal"
+              type="password"
+              error={!!errors.password}
+              helperText={errors.password ? errors.password.message : ''}
+            />
+          )}
+        />
+        {errors.email && <Typography color="error" mb={2}>{String(errors.email.message)}</Typography>}
+        <Button type="submit" style={{ marginTop: '10px' }} variant="contained" color="primary" fullWidth>
+          Sign In
+        </Button>
+      </form>
     </Box >
   );
 }
