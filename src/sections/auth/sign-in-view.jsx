@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { signInWithEmailAndPassword, getAuth, signOut } from 'firebase/auth';
 import { auth } from 'src/firebase-config'; // Ensure you have firebase-config file
 
-import Box from '@mui/material/Box';
+import Box from '@mui/material/Box'
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
 import Typography from '@mui/material/Typography';
