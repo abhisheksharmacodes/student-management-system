@@ -61,8 +61,14 @@ export function UserTableRow({ id, name, classNumber, section, rollnumber }: Use
         </TableCell>
 
         <TableCell align="center">
-          <IconButton onClick={handleOpenPopover}>
-            <Iconify icon="eva:more-vertical-fill" /> 
+          <IconButton>
+            <Iconify icon="eva:eye-outline" />
+          </IconButton>
+          <IconButton>
+            <Iconify icon="eva:edit-outline" />
+          </IconButton>
+          <IconButton>
+            <Iconify icon="eva:trash-2-outline" />
           </IconButton>
         </TableCell>
       </TableRow>

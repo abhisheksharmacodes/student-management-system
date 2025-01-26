@@ -59,12 +59,11 @@ export function UserView() {
       try {
         const querySnapshot = await getDocs(collection(db, 'users'));
         const data2 = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
           fullName: doc.data().fullName,
           classNumber: doc.data().classNumber,
           section: doc.data().section,
           rollNumber: doc.data().rollNumber,
-          // Add other fields as necessary
+          studentId:doc.data().studentId
         }));
         console.log('Data fetched: ', data2);
         setData(data2);
@@ -83,7 +82,7 @@ export function UserView() {
     inputData: data,
     comparator: getComparator(table.order, table.orderBy),
     filterName,
-  }).sort((a, b) => a.id - b.id);
+  }).sort((a, b) => a.studentId - b.studentId);
 
   const notFound = !dataFiltered.length && !!filterName;
 
@@ -116,7 +115,7 @@ export function UserView() {
             console.log(formData.gender);
             try {
               const docRef = await addDoc(collection(db, 'users'), {
-                id: 1001 + data.length,
+                studentId: 1001 + data.length,
                 fullName: formData.fullName,
                 dob: formData.dob,
                 gender: formData.gender,
@@ -394,7 +393,7 @@ export function UserView() {
                 />
               </Box>
             </Box>
-            <Button type="submit" variant="contained" color="primary" fullWidth>
+            <Button type="submit" style={{marginTop:'10px'}} variant="contained" color="primary" fullWidth>
               Submit
             </Button>
           </form>
@@ -429,7 +428,7 @@ export function UserView() {
               <TableBody>
                 {paginatedData.map((row: any) => (
                   <UserTableRow
-                    id={row.id}
+                    id={row.studentId}
                     key={row.id}
                     name={row.fullName}
                     classNumber={row.classNumber}
