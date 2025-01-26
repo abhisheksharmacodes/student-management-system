@@ -16,13 +16,11 @@ import { Iconify } from 'src/components/iconify';
 // ----------------------------------------------------------------------
 
 export type UserProps = {
-  id: string;
+  id: number;
   name: string;
-  role: string;
-  status: string;
-  company: string;
-  avatarUrl: string;
-  isVerified: boolean;
+  classNumber: string;
+  section: string;
+  rollnumber: number;
 };
 
 type UserTableRowProps = {
@@ -63,14 +61,8 @@ export function UserTableRow({ id, name, classNumber, section, rollnumber }: Use
         </TableCell>
 
         <TableCell align="center">
-          <IconButton>
-            <Iconify icon="eva:eye-outline" />
-          </IconButton>
-          <IconButton>
-            <Iconify icon="eva:edit-outline" />
-          </IconButton>
-          <IconButton>
-            <Iconify icon="eva:trash-2-outline" />
+          <IconButton onClick={handleOpenPopover}>
+            <Iconify icon="eva:more-vertical-fill" /> 
           </IconButton>
         </TableCell>
       </TableRow>

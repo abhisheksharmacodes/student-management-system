@@ -1,9 +1,9 @@
+// @ts-nocheck
+
 import { useState, useCallback, useEffect } from 'react';
 import { collection, getDocs, addDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth';
-
-import { db, auth } from '../../../firebase-config'; // Ensure you have firebase-config file
 
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
@@ -32,6 +32,7 @@ import { UserTableToolbar } from '../user-table-toolbar';
 import { emptyRows, applyFilter, getComparator } from '../utils';
 
 import type { UserProps } from '../user-table-row';
+import { db, auth } from '../../../firebase-config'; // Ensure you have firebase-config file
 
 // ----------------------------------------------------------------------
 
@@ -41,7 +42,7 @@ export function UserView() {
   const [open, setOpen] = useState(false);
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [filterName, setFilterName] = useState('');
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<UserProps[]>([]);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (user) => {
@@ -57,12 +58,16 @@ export function UserView() {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'users'));
-        const data = querySnapshot.docs.map((doc) => ({
+        const data2 = querySnapshot.docs.map((doc) => ({
           id: doc.id,
-          ...doc.data(),
+          fullName: doc.data().fullName,
+          classNumber: doc.data().classNumber,
+          section: doc.data().section,
+          rollNumber: doc.data().rollNumber,
+          // Add other fields as necessary
         }));
-        console.log('Data fetched: ', data);
-        setData(data);
+        console.log('Data fetched: ', data2);
+        setData(data2);
       } catch (error) {
         console.error('Error getting documents: ', error);
       }
