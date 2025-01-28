@@ -77,7 +77,7 @@ export function UserView() {
     };
 
     fetchData();
-  }, [data2]);
+  }, [data]);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
