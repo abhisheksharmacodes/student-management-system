@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useCallback, useEffect } from 'react';
-import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, getDoc, updateDoc, deleteDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth';
 
@@ -108,6 +108,15 @@ export function UserView() {
   };
 
   const handleViewClose = () => setViewOpen(false);
+
+  const handleDelete = async (id) => {
+    try {
+      await deleteDoc(doc(db, 'users', id));
+      setData(data.filter((student) => student.id !== id));
+    } catch (error) {
+      console.error('Error deleting document: ', error);
+    }
+  };
 
   const dataFiltered: UserProps[] = applyFilter({
     inputData: data,
@@ -783,7 +792,7 @@ export function UserView() {
                       <IconButton onClick={() => handleEditOpen(row.id)}>
                         <Iconify icon="eva:edit-outline" />
                       </IconButton>
-                      <IconButton>
+                      <IconButton onClick={() => handleDelete(row.id)}>
                         <Iconify icon="eva:trash-2-outline" />
                       </IconButton>
                     </>
