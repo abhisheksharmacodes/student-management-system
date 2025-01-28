@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useCallback, useEffect } from 'react';
-import { collection, getDocs, addDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, getDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth';
 
@@ -15,8 +15,9 @@ import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
-import { RadioGroup, FormControlLabel, Radio, MenuItem, Checkbox, Slider } from '@mui/material';
+import { RadioGroup, FormControlLabel, Radio, MenuItem, Checkbox, Slider, IconButton } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
+import VisibilityIcon from '@mui/icons-material/Visibility';
 
 import { _users } from 'src/_mock';
 import { DashboardContent } from 'src/layouts/dashboard';
@@ -40,6 +41,8 @@ export function UserView() {
   const navigate = useNavigate();
   const table = useTable();
   const [open, setOpen] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const { handleSubmit, control, formState: { errors } } = useForm();
   const [filterName, setFilterName] = useState('');
   const [data, setData] = useState<UserProps[]>([]);
@@ -58,14 +61,14 @@ export function UserView() {
     const fetchData = async () => {
       try {
         const querySnapshot = await getDocs(collection(db, 'users'));
-        const data2 = querySnapshot.docs.map((doc) => ({
-          fullName: doc.data().fullName,
-          classNumber: doc.data().classNumber,
-          section: doc.data().section,
-          rollNumber: doc.data().rollNumber,
-          studentId:doc.data().studentId
+        const data2 = querySnapshot.docs.map((doc2) => ({
+          id: doc2.id,
+          fullName: doc2.data().fullName,
+          classNumber: doc2.data().classNumber,
+          section: doc2.data().section,
+          rollNumber: doc2.data().rollNumber,
+          studentId: doc2.data().studentId,
         }));
-        console.log('Data fetched: ', data2);
         setData(data2);
       } catch (error) {
         console.error('Error getting documents: ', error);
@@ -73,10 +76,31 @@ export function UserView() {
     };
 
     fetchData();
-  }, [data]);
+  }, []);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+
+  const handleViewOpen = async (id) => {
+    console.info(id)
+    // try {
+    if (doc) {
+      const docRef = doc(db, 'users', id);
+      const docSnap = await getDoc(docRef);
+      if (docSnap.exists()) {
+        setSelectedStudent(docSnap.data());
+        setViewOpen(true);
+      } else {
+        console.log('No such document!');
+      }
+      // } catch (error) {
+      //   console.error('Error getting document:', error);
+      // }
+    }
+
+  };
+
+  const handleViewClose = () => setViewOpen(false);
 
   const dataFiltered: UserProps[] = applyFilter({
     inputData: data,
@@ -112,7 +136,6 @@ export function UserView() {
           <Typography variant="h6" mb={2}>Add Student</Typography>
           <form onSubmit={handleSubmit(async (formData) => {
             // Perform form submission logic here
-            console.log(formData.gender);
             try {
               const docRef = await addDoc(collection(db, 'users'), {
                 studentId: 1001 + data.length,
@@ -129,7 +152,6 @@ export function UserView() {
                 learningGoals: formData.learningGoals,
                 rollNumber: formData.rollNumber
               });
-              console.log('Document written with ID: ', docRef.id);
             } catch (error) {
               console.error('Error adding document: ', error);
             }
@@ -393,10 +415,32 @@ export function UserView() {
                 />
               </Box>
             </Box>
-            <Button type="submit" style={{marginTop:'10px'}} variant="contained" color="primary" fullWidth>
+            <Button type="submit" style={{ marginTop: '10px' }} variant="contained" color="primary" fullWidth>
               Submit
             </Button>
           </form>
+        </Box>
+      </Modal>
+
+      <Modal open={viewOpen} onClose={handleViewClose}>
+        <Box sx={{ ...modalStyle }}>
+          <Typography variant="h6" mb={2}>Student Details</Typography>
+          {selectedStudent && (
+            <Box>
+              <Typography><strong>Full Name:</strong> {selectedStudent.fullName}</Typography>
+              <Typography><strong>Date of Birth:</strong> {selectedStudent.dob}</Typography>
+              <Typography><strong>Gender:</strong> {selectedStudent.gender}</Typography>
+              <Typography><strong>Email:</strong> {selectedStudent.email}</Typography>
+              <Typography><strong>Phone Number:</strong> {selectedStudent.phoneNumber}</Typography>
+              <Typography><strong>Address:</strong> {selectedStudent.address}</Typography>
+              <Typography><strong>Class:</strong> {selectedStudent.classNumber}</Typography>
+              <Typography><strong>Section:</strong> {selectedStudent.section}</Typography>
+              <Typography><strong>Study Hours:</strong> {selectedStudent.studyHours}</Typography>
+              <Typography><strong>Languages:</strong> {selectedStudent.languages.join(', ')}</Typography>
+              <Typography><strong>Learning Goals:</strong> {selectedStudent.learningGoals}</Typography>
+              <Typography><strong>Roll Number:</strong> {selectedStudent.rollNumber}</Typography>
+            </Box>
+          )}
         </Box>
       </Modal>
 
@@ -434,6 +478,11 @@ export function UserView() {
                     classNumber={row.classNumber}
                     section={row.section}
                     rollnumber={row.rollNumber}
+                    actions={
+                      <IconButton onClick={() => handleViewOpen(row.id)}>
+                        <Iconify icon="eva:eye-outline" />
+                      </IconButton>
+                    }
                   />
                 ))}
 

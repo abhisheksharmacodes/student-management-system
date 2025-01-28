@@ -12,18 +12,12 @@ export const navData = [
   {
     title: 'Students',
     path: '/students',
-    icon: icon('ic-user'),
-    onClick: () => {
-      console.log('Navigating to Students');
-    },
+    icon: icon('ic-user')
   },
   {
     title: 'Log out',
     path: '/sign-in',
-    icon: icon('ic-lock'),
-    onClick: () => {
-      console.log('Logging out');
-    },
+    icon: icon('ic-lock')
   }
 ];
 

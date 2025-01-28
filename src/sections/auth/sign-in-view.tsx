@@ -21,7 +21,6 @@ export function SignInView() {
     signOut(auth2)
       .then(() => {
         // Sign-out successful.
-        console.log('User signed out.');
         // Redirect the user to the login page or any other desired page
         // e.g., using a routing library like React Router:
         navigate('/sign-in');

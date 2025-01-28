@@ -1,3 +1,5 @@
+// @ts-nocheck
+
 import { useState, useCallback } from 'react';
 
 import Box from '@mui/material/Box';
@@ -29,9 +31,10 @@ type UserTableRowProps = {
   classNumber: string;
   section: string;
   rollnumber: number;
+  actions: any;
 };
 
-export function UserTableRow({ id, name, classNumber, section, rollnumber }: UserTableRowProps) {
+export function UserTableRow({ id, name, classNumber, section, rollnumber, actions }: UserTableRowProps) {
   const [openPopover, setOpenPopover] = useState<HTMLButtonElement | null>(null);
 
   const handleOpenPopover = useCallback((event: React.MouseEvent<HTMLButtonElement>) => {
@@ -61,15 +64,7 @@ export function UserTableRow({ id, name, classNumber, section, rollnumber }: Use
         </TableCell>
 
         <TableCell align="center">
-          <IconButton>
-            <Iconify icon="eva:eye-outline" />
-          </IconButton>
-          <IconButton>
-            <Iconify icon="eva:edit-outline" />
-          </IconButton>
-          <IconButton>
-            <Iconify icon="eva:trash-2-outline" />
-          </IconButton>
+          {actions}
         </TableCell>
       </TableRow>
 
