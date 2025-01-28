@@ -13,6 +13,8 @@ import TableBody from '@mui/material/TableBody';
 import Typography from '@mui/material/Typography';
 import TableContainer from '@mui/material/TableContainer';
 import TablePagination from '@mui/material/TablePagination';
+import TableCell from '@mui/material/TableCell';
+import TableRow from '@mui/material/TableRow';
 import Modal from '@mui/material/Modal';
 import TextField from '@mui/material/TextField';
 import { RadioGroup, FormControlLabel, Radio, MenuItem, Checkbox, Slider, IconButton } from '@mui/material';
@@ -733,20 +735,58 @@ export function UserView() {
         <Box sx={{ ...modalStyle }}>
           <Typography variant="h6" mb={2}>Student Details</Typography>
           {selectedStudent && (
-            <Box>
-              <Typography><strong>Full Name:</strong> {selectedStudent.fullName}</Typography>
-              <Typography><strong>Date of Birth:</strong> {selectedStudent.dob}</Typography>
-              <Typography><strong>Gender:</strong> {selectedStudent.gender}</Typography>
-              <Typography><strong>Email:</strong> {selectedStudent.email}</Typography>
-              <Typography><strong>Phone Number:</strong> {selectedStudent.phoneNumber}</Typography>
-              <Typography><strong>Address:</strong> {selectedStudent.address}</Typography>
-              <Typography><strong>Class:</strong> {selectedStudent.classNumber}</Typography>
-              <Typography><strong>Section:</strong> {selectedStudent.section}</Typography>
-              <Typography><strong>Study Hours:</strong> {selectedStudent.studyHours}</Typography>
-              <Typography><strong>Languages:</strong> {selectedStudent.languages.join(', ')}</Typography>
-              <Typography><strong>Learning Goals:</strong> {selectedStudent.learningGoals}</Typography>
-              <Typography><strong>Roll Number:</strong> {selectedStudent.rollNumber}</Typography>
-            </Box>
+            <Table>
+              <TableBody>
+              <TableRow>
+                <TableCell><strong>Full Name:</strong></TableCell>
+                <TableCell>{selectedStudent.fullName}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Date of Birth:</strong></TableCell>
+                <TableCell>{selectedStudent.dob}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Gender:</strong></TableCell>
+                <TableCell>{selectedStudent.gender}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Email:</strong></TableCell>
+                <TableCell>{selectedStudent.email}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Phone Number:</strong></TableCell>
+                <TableCell>{selectedStudent.phoneNumber}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Address:</strong></TableCell>
+                <TableCell>{selectedStudent.address}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Class:</strong></TableCell>
+                <TableCell>{selectedStudent.classNumber}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Section:</strong></TableCell>
+                <TableCell>{selectedStudent.section}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Study Hours:</strong></TableCell>
+                <TableCell>{selectedStudent.studyHours}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Languages:</strong></TableCell>
+                <TableCell>{selectedStudent.languages.join(', ')}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Learning Goals:</strong></TableCell>
+                <TableCell>{selectedStudent.learningGoals}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell><strong>Roll Number:</strong></TableCell>
+                <TableCell>{selectedStudent.rollNumber}</TableCell>
+              </TableRow>
+              </TableBody>
+            </Table>
           )}
         </Box>
       </Modal>
