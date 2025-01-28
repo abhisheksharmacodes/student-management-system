@@ -1,7 +1,7 @@
 // @ts-nocheck
 
 import { useState, useCallback, useEffect } from 'react';
-import { collection, getDocs, addDoc, doc, getDoc } from 'firebase/firestore';
+import { collection, getDocs, addDoc, doc, getDoc, updateDoc } from 'firebase/firestore';
 import { useNavigate } from 'react-router-dom';
 import { onAuthStateChanged, signOut, getAuth } from 'firebase/auth';
 
@@ -41,9 +41,10 @@ export function UserView() {
   const navigate = useNavigate();
   const table = useTable();
   const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
   const [selectedStudent, setSelectedStudent] = useState(null);
-  const { handleSubmit, control, formState: { errors } } = useForm();
+  const { handleSubmit, control, formState: { errors }, reset } = useForm();
   const [filterName, setFilterName] = useState('');
   const [data, setData] = useState<UserProps[]>([]);
 
@@ -81,23 +82,29 @@ export function UserView() {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
-  const handleViewOpen = async (id) => {
-    console.info(id)
-    // try {
-    if (doc) {
-      const docRef = doc(db, 'users', id);
-      const docSnap = await getDoc(docRef);
-      if (docSnap.exists()) {
-        setSelectedStudent(docSnap.data());
-        setViewOpen(true);
-      } else {
-        console.log('No such document!');
-      }
-      // } catch (error) {
-      //   console.error('Error getting document:', error);
-      // }
+  const handleEditOpen = async (id) => {
+    const docRef = doc(db, 'users', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setSelectedStudent({ id, ...docSnap.data() });
+      reset(docSnap.data());
+      setEditOpen(true);
+    } else {
+      console.log('No such document!');
     }
+  };
 
+  const handleEditClose = () => setEditOpen(false);
+
+  const handleViewOpen = async (id) => {
+    const docRef = doc(db, 'users', id);
+    const docSnap = await getDoc(docRef);
+    if (docSnap.exists()) {
+      setSelectedStudent(docSnap.data());
+      setViewOpen(true);
+    } else {
+      console.log('No such document!');
+    }
   };
 
   const handleViewClose = () => setViewOpen(false);
@@ -422,6 +429,297 @@ export function UserView() {
         </Box>
       </Modal>
 
+      <Modal open={editOpen} onClose={handleEditClose}>
+        <Box sx={{ ...modalStyle }}>
+          <Typography variant="h6" mb={2}>Edit Student Details</Typography>
+          <form onSubmit={handleSubmit(async (formData) => {
+            // Perform form submission logic here
+            try {
+              const docRef = doc(db, 'users', selectedStudent.id);
+              await updateDoc(docRef, {
+                fullName: formData.fullName,
+                dob: formData.dob,
+                gender: formData.gender,
+                email: formData.email,
+                phoneNumber: formData.phoneNumber,
+                address: formData.address,
+                classNumber: formData.classNumber,
+                section: formData.section,
+                studyHours: formData.studyHours,
+                languages: formData.languages,
+                learningGoals: formData.learningGoals,
+                rollNumber: formData.rollNumber
+              });
+            } catch (error) {
+              console.error('Error updating document: ', error);
+            }
+            handleEditClose();
+          })}>
+            <Box display="flex" flexWrap="wrap" justifyContent="space-between" sx={{ '@media (max-width: 840px)': { flexDirection: 'column' } }}>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="fullName"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Full Name is required' }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Full Name"
+                      fullWidth
+                      margin="normal"
+                      error={!!errors.fullName}
+                      helperText={errors.fullName ? errors.fullName.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="dob"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Date of Birth is required' }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Date of Birth"
+                      type="date"
+                      fullWidth
+                      margin="normal"
+                      InputLabelProps={{ shrink: true }}
+                      error={!!errors.dob}
+                      helperText={errors.dob ? errors.dob.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }} style={{ marginTop: '10px' }}>
+                <Controller
+                  name="gender"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Gender is required' }}
+                  render={({ field }) => (
+                    <Box>
+                      <Typography>Gender</Typography>
+                      <RadioGroup {...field} row>
+                        <FormControlLabel value="male" control={<Radio />} label="Male" />
+                        <FormControlLabel value="female" control={<Radio />} label="Female" />
+                        <FormControlLabel value="other" control={<Radio />} label="Other" />
+                      </RadioGroup>
+                      {errors.gender && <Typography color="error" style={{ fontSize: '12px', marginLeft: '15px' }}>{errors.gender.message}</Typography>}
+                    </Box>
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="email"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Email is required', pattern: { value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/, message: 'Invalid email' } }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Email"
+                      fullWidth
+                      margin="normal"
+                      type="email"
+                      error={!!errors.email}
+                      helperText={errors.email ? errors.email.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="phoneNumber"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Phone Number is required', pattern: { value: /^[0-9]{10}$/, message: 'Invalid phone number' } }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Phone Number"
+                      fullWidth
+                      type="tel"
+                      margin="normal"
+                      error={!!errors.phoneNumber}
+                      helperText={errors.phoneNumber ? errors.phoneNumber.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="address"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Address is required' }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Address"
+                      fullWidth
+                      margin="normal"
+                      multiline
+                      rows={4}
+                      error={!!errors.address}
+                      helperText={errors.address ? errors.address.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="classNumber"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: 'Class Number is required',
+                    validate: value => value <= 12 || 'Class Number cannot be more than 12'
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Class"
+                      fullWidth
+                      type="number"
+                      margin="normal"
+                      error={!!errors.classNumber}
+                      helperText={errors.classNumber ? errors.classNumber.message : ''}
+                      inputProps={{ max: 12 }}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="section"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Section is required' }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Section"
+                      select
+                      fullWidth
+                      margin="normal"
+                      error={!!errors.section}
+                      helperText={errors.section ? errors.section.message : ''}
+                    >
+                      {['A', 'B', 'C'].map((option) => (
+                        <MenuItem key={option} value={option}>
+                          {option}
+                        </MenuItem>
+                      ))}
+                    </TextField>
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }} style={{ marginTop: '10px' }}>
+                <Controller
+                  name="studyHours"
+                  control={control}
+                  defaultValue={0}
+                  rules={{ required: 'Study Hours is required' }}
+                  render={({ field }) => (
+                    <Box>
+                      <Typography>Hours of Study</Typography>
+                      <Slider
+                        {...field}
+                        valueLabelDisplay="auto"
+                        step={1}
+                        marks
+                        min={0}
+                        max={9}
+                        error={!!errors.studyHours}
+                      />
+                      {errors.studyHours && <Typography color="error">{errors.studyHours.message}</Typography>}
+                    </Box>
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }} style={{ marginTop: '10px' }}>
+                <Controller
+                  name="languages"
+                  control={control}
+                  defaultValue={[]}
+                  rules={{ required: 'At least one language is required' }}
+                  render={({ field }) => (
+                    <Box>
+                      <Typography>Languages</Typography>
+                      {['English', 'Hindi', 'Other'].map((language) => (
+                        <FormControlLabel
+                          key={language}
+                          control={<Checkbox
+                            checked={field.value.includes(language)}
+                            onChange={(e) => {
+                              const newValue = e.target.checked
+                                ? [...field.value, language]
+                                : field.value.filter((val: string) => val !== language);
+                              field.onChange(newValue);
+                            }}
+                          />}
+                          label={language}
+                        />
+                      ))}
+                      {errors.languages && <Typography color="error">{errors.languages.message}</Typography>}
+                    </Box>
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }}>
+                <Controller
+                  name="learningGoals"
+                  control={control}
+                  defaultValue=""
+                  rules={{ required: 'Learning Goals are required' }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Learning Goals"
+                      fullWidth
+                      margin="normal"
+                      multiline
+                      rows={4}
+                      error={!!errors.learningGoals}
+                      helperText={errors.learningGoals ? errors.learningGoals.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+              <Box width={{ xs: '100%', md: '48%' }} style={{ marginBottom: '15px' }}>
+                <Controller
+                  name="rollNumber"
+                  control={control}
+                  defaultValue=""
+                  rules={{
+                    required: 'Roll Number is required'
+                  }}
+                  render={({ field }) => (
+                    <TextField
+                      {...field}
+                      label="Roll Number"
+                      fullWidth
+                      type="number"
+                      margin="normal"
+                      error={!!errors.rollNumber}
+                      helperText={errors.rollNumber ? errors.rollNumber.message : ''}
+                    />
+                  )}
+                />
+              </Box>
+            </Box>
+            <Button type="submit" style={{ marginTop: '10px' }} variant="contained" color="primary" fullWidth>
+              Submit
+            </Button>
+          </form>
+        </Box>
+      </Modal>
+
       <Modal open={viewOpen} onClose={handleViewClose}>
         <Box sx={{ ...modalStyle }}>
           <Typography variant="h6" mb={2}>Student Details</Typography>
@@ -478,10 +776,17 @@ export function UserView() {
                     classNumber={row.classNumber}
                     section={row.section}
                     rollnumber={row.rollNumber}
-                    actions={
+                    actions={<>
                       <IconButton onClick={() => handleViewOpen(row.id)}>
                         <Iconify icon="eva:eye-outline" />
                       </IconButton>
+                      <IconButton onClick={() => handleEditOpen(row.id)}>
+                        <Iconify icon="eva:edit-outline" />
+                      </IconButton>
+                      <IconButton>
+                        <Iconify icon="eva:trash-2-outline" />
+                      </IconButton>
+                    </>
                     }
                   />
                 ))}
