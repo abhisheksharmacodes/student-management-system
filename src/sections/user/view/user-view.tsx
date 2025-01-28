@@ -384,7 +384,7 @@ export function UserView() {
                           label={language}
                         />
                       ))}
-                      {errors.languages && <Typography color="error">{errors.languages.message}</Typography>}
+                      {errors.languages && <Typography color="error" style={{fontSize:'12px'}}>{errors.languages.message}</Typography>}
                     </Box>
                   )}
                 />
