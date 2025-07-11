@@ -1,4 +1,4 @@
-# SMS — Student Management System
+# Student Management System
 
 A modern, customizable web platform for student management, built with React, TypeScript, Material UI, Firebase, and Vite. Features a responsive dashboard, student records management, analytics, authentication, product/course catalog, and more—ideal for schools and educational institutions.
 
