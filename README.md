@@ -1,48 +1,89 @@
-## Minimal UI ([Free version](https://free.minimals.cc/))
+# SMS — Student Management System
 
-![license](https://img.shields.io/badge/license-MIT-blue.svg)
+A modern, customizable web platform for student management, built with React, TypeScript, Material UI, Firebase, and Vite. Features a responsive dashboard, student records management, analytics, authentication, product/course catalog, and more—ideal for schools and educational institutions.
 
-![preview](public/assets/images/minimal-free-preview.jpg)
+---
 
-> Free React Admin Dashboard made with Material-UI components and React + Vite.js.
+## 🚀 Features
 
-## Pages
+- 🎓 **Student Management:** Add, view, and organize student records with detailed profiles.
+- 📊 **Analytics Dashboard:** Visualize key metrics, trends, and activities for students and courses.
+- 🔐 **Authentication:** Secure sign-in for users (Firebase Auth).
+- 📦 **Product/Course Catalog:** Manage and display products or courses.
+- 📰 **Blog/News Section:** Share updates and information with the community.
+- 🖥️ **Responsive, Customizable UI:** Built with Material UI and Vite for fast, flexible development.
 
-- [Dashboard](https://free.minimals.cc/)
-- [Users](https://free.minimals.cc/user)
-- [Products](https://free.minimals.cc/products)
-- [Blog](https://free.minimals.cc/blog)
-- [Sign in](https://free.minimals.cc/sign-in)
-- [Not found](https://free.minimals.cc/404)
+---
 
-## Quick start
+## 🛠️ Tech Stack
 
-- Clone the repo: `git clone https://github.com/minimal-ui-kit/material-kit-react.git`
-- Recommended: `Node.js v20.x`
-- **Install:** `npm i` or `yarn install`
-- **Start:** `npm run dev` or `yarn dev`
-- **Build:** `npm run build` or `yarn build`
-- Open browser: `http://localhost:3039`
+- **Frontend:** React, TypeScript, Material UI, Vite
+- **State & Forms:** React state, React Hook Form
+- **Backend/Database:** Firebase (Firestore, Auth)
+- **Charts:** ApexCharts, react-apexcharts
+- **Styling:** Material UI, custom CSS
+- **Deployment:** Vercel, Netlify, or any static host supporting Vite
 
-## Upgrade to PRO Version
+---
 
-| Minimal Free                | [Minimal Pro](https://material-ui.com/store/items/minimal-dashboard/)                                   |
-| :-------------------------- | :------------------------------------------------------------------------------------------------------ |
-| **6** Pages                 | **70+** Pages                                                                                           |
-| **Partial** theme customize | **Fully** theme customize                                                                               |
-| -                           | **Next.js** version                                                                                     |
-| -                           | **TypeScript** version (Standard Plus and Extended license)                                             |
-| -                           | Design **Figma** file (Standard Plus and Extended license)                                              |
-| -                           | Authentication with **Amplify**, **Auth0**, **JWT**, **Firebase** and **Supabase**                      |
-| -                           | Light/dark mode, right-to-left, form validation... ([+more components](https://minimals.cc/components)) |
-| -                           | Complete users flows                                                                                    |
-| -                           | 1 year of free updates / 6 months of technical support                                                  |
-| -                           | Learn more: [Package & license](https://docs.minimals.cc/package)                                       |
+## 📁 Folder Structure
 
-## License
+```
+/Madrocket
+  /public           # Static assets (images, icons, illustrations)
+  /src              # Main app (components, pages, sections, layouts, theme, utils)
+    /components     # Reusable UI components
+    /layouts        # App layout and navigation
+    /pages          # Route-based pages (dashboard, students, products, blog, sign-in, etc.)
+    /sections       # Feature sections (overview, user, product, blog, auth, error)
+    /theme          # Theme, palette, and style utilities
+    /utils          # Utility functions
+    firebase-config.ts # Firebase setup
+    app.tsx, main.tsx  # App entry points
+  package.json      # Project dependencies
+  README.md         # Project documentation
+  ...
+```
 
-Distributed under the [MIT](https://github.com/minimal-ui-kit/minimal.free/blob/main/LICENSE.md) license.
+---
 
-## Contact us
+## 🏁 How to Run Locally
 
-Email: support@minimals.cc
+### 1. Clone & Install
+```bash
+# Clone the repository
+git clone https://github.com/abhisheksharmacodes/student-management-system.git
+cd Madrocket
+
+# Install dependencies
+yarn install # or npm install
+```
+
+### 2. Start the Development Server
+```bash
+yarn dev # or npm run dev
+```
+
+- App will be available at [http://localhost:5173](http://localhost:5173) (default Vite port)
+
+---
+
+## 📦 Deployment
+
+- Deploy to [Vercel](https://vercel.com), [Netlify](https://www.netlify.com/), or any platform supporting static Vite builds.
+- Set any required environment variables (e.g., for Firebase config) in your deployment environment.
+
+---
+
+## 📝 Customization
+
+- **Content:** Edit files in `/src/pages` and `/src/sections` for main content, features, and UI.
+- **Images & Assets:** Place images and icons in `/public`.
+- **Theme:** Adjust Material UI theme in `/src/theme`.
+- **Firebase:** Update Firebase config in `src/firebase-config.ts` as needed.
+
+---
+
+## 🤝 Credits
+
+> Built with [React](https://react.dev), [TypeScript](https://www.typescriptlang.org/), [Material UI](https://mui.com/), [Firebase](https://firebase.google.com/), [Vite](https://vitejs.dev/), and ❤️ for education.
