@@ -7,10 +7,7 @@ A modern, customizable web platform for student management, built with React, Ty
 ## 🚀 Features
 
 - 🎓 **Student Management:** Add, view, and organize student records with detailed profiles.
-- 📊 **Analytics Dashboard:** Visualize key metrics, trends, and activities for students and courses.
 - 🔐 **Authentication:** Secure sign-in for users (Firebase Auth).
-- 📦 **Product/Course Catalog:** Manage and display products or courses.
-- 📰 **Blog/News Section:** Share updates and information with the community.
 - 🖥️ **Responsive, Customizable UI:** Built with Material UI and Vite for fast, flexible development.
 
 ---
