@@ -1657,7 +1657,7 @@ export function UserView() {
               </TableRow>
               <TableRow>
                 <TableCell><strong>Languages:</strong></TableCell>
-                <TableCell>{selectedStudent.languages.join(', ')}</TableCell>
+                <TableCell>{Array.isArray(selectedStudent.languages) ? selectedStudent.languages.join(', ') : ''}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell><strong>Learning Goals:</strong></TableCell>
@@ -1674,14 +1674,14 @@ export function UserView() {
       </Modal>
 
       <Modal open={deleteOpen} onClose={handleDeleteClose}>
-        <Box sx={{ ...modalStyle, width: '400px', height: '200px' }}>
+        <Box sx={{ ...modalStyle, width: '400px', height: '200px', overflow:"hidden" }}>
           <Typography variant="h6" mb={2}>Confirm Delete</Typography>
           <Typography mb={2}>Are you sure you want to delete this student?</Typography>
-          <Box display="flex" justifyContent="space-between">
-            <Button variant="contained" color="secondary" onClick={handleDeleteConfirm}>
+          <Box display="flex" gap="12px">
+            <Button variant="contained" sx={{backgroundColor:"rgb(28, 37, 46)"}} onClick={handleDeleteConfirm}>
               Yes
             </Button>
-            <Button variant="contained" onClick={handleDeleteClose}>
+            <Button variant="outlined" sx={{borderColor:"rgb(28, 37, 46)", color:"rgb(28, 37, 46)"}} onClick={handleDeleteClose}>
               No
             </Button>
           </Box>
