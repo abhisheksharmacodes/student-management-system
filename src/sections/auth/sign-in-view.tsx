@@ -83,6 +83,9 @@ export function SignInView() {
       <Button type="submit" style={{ marginTop: '10px' }} variant="contained" color="primary" fullWidth>
         Sign In
       </Button>
+      <Typography align="center" mt={2}>
+        Don&apos;t have an account? <a href="/sign-up">Sign Up</a>
+      </Typography>
     </form>
     </Box >
   );
